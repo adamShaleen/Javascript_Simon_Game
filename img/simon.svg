@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500px" height="500px" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M91.6,89.5418327 C132.85,48.4561753 185.65,26.9422311 250,25 L250,250 L25,250 C28.15,184.113546 50.35,130.62749 91.6,89.5418327 Z" id="path-1"></path>
+        <path d="M91.6,314.541833 C132.85,273.456175 185.65,251.942231 250,250 L250,475 L25,475 C28.15,409.113546 50.35,355.62749 91.6,314.541833 Z" id="path-2"></path>
+        <path d="M316.6,314.541833 C357.85,273.456175 410.65,251.942231 475,250 L475,475 L250,475 C253.15,409.113546 275.35,355.62749 316.6,314.541833 Z" id="path-3"></path>
+        <path d="M316.6,89.5418327 C357.85,48.4561753 410.65,26.9422311 475,25 L475,250 L250,250 C253.15,184.113546 275.35,130.62749 316.6,89.5418327 Z" id="path-4"></path>
+        <rect id="path-5" x="170" y="251" width="50" height="40" rx="5"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill="#000000" cx="250" cy="250" r="250"></circle>
+        <g id="Rectangle" stroke-linejoin="bevel" stroke="#979797">
+            <use fill="#00C513" fill-rule="evenodd" xlink:href="#path-1"></use>
+            <use xlink:href="#path-1"></use>
+        </g>
+        <g id="Rectangle" stroke-linejoin="bevel" transform="translate(137.500000, 362.500000) rotate(-90.000000) translate(-137.500000, -362.500000) " stroke="#979797">
+            <use fill="#FFE500" fill-rule="evenodd" xlink:href="#path-2"></use>
+            <use xlink:href="#path-2"></use>
+        </g>
+        <g id="Rectangle" stroke-linejoin="bevel" transform="translate(362.500000, 362.500000) rotate(180.000000) translate(-362.500000, -362.500000) " stroke="#979797">
+            <use fill="#005CFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+            <use xlink:href="#path-3"></use>
+        </g>
+        <g id="Rectangle" stroke-linejoin="bevel" transform="translate(362.500000, 137.500000) rotate(90.000000) translate(-362.500000, -137.500000) " stroke="#979797">
+            <use fill="#FF0000" fill-rule="evenodd" xlink:href="#path-4"></use>
+            <use xlink:href="#path-4"></use>
+        </g>
+        <rect id="Rectangle-2" fill="#000000" x="238" y="13" width="25" height="475"></rect>
+        <rect id="Rectangle-2" fill="#000000" transform="translate(250.500000, 250.500000) rotate(90.000000) translate(-250.500000, -250.500000) " x="238" y="13" width="25" height="475"></rect>
+        <circle id="Oval-2" fill="#000000" cx="250.5" cy="250.5" r="112.5"></circle>
+        <g id="Rectangle-3">
+            <use stroke="#979797" fill-opacity="0.300000012" fill="#FF0000" fill-rule="evenodd" xlink:href="#path-5"></use>
+            <use stroke="#979797" xlink:href="#path-5"></use>
+            <use stroke="#979797" xlink:href="#path-5"></use>
+            <use stroke="#000000" xlink:href="#path-5"></use>
+            <use stroke="#FD9F9F" xlink:href="#path-5"></use>
+        </g>
+        <text id="SIMON" font-family="Arial-Black, Arial Black" font-size="48" font-weight="700" letter-spacing="-3.555327" fill="#FFFFFF">
+            <tspan x="170" y="223">SIMON</tspan>
+        </text>
+        <circle id="Oval-3" stroke="#FFFFFF" fill="#FF0000" cx="253" cy="270" r="15"></circle>
+        <circle id="Oval-3" stroke="#FFFFFF" fill="#FFE500" cx="311" cy="270" r="15"></circle>
+        <text id="Count" font-family="Arial-Black, Arial Black" font-size="18" font-weight="700" letter-spacing="-2.76525426" fill="#FFFFFF">
+            <tspan x="170" y="320">Count</tspan>
+        </text>
+        <text id="Start" font-family="Arial-Black, Arial Black" font-size="18" font-weight="700" letter-spacing="-2.76525426" fill="#FFFFFF">
+            <tspan x="235" y="320">Start</tspan>
+        </text>
+        <text id="Strict" font-family="Arial-Black, Arial Black" font-size="18" font-weight="700" letter-spacing="-2.76525426" fill="#FFFFFF">
+            <tspan x="292" y="320">Strict</tspan>
+        </text>
+    </g>
+</svg>
