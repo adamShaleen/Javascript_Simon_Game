@@ -9,4 +9,28 @@
 
 $(document).ready(function() {
 
+    $('.gameplayButton').click(function() {
+        lightGameplayButton($(this));
+    });
+
 });
+
+function lightGameplayButton(button) {
+    var pressedButton = button.attr('id');
+    var pathId = allGameplayButtons[pressedButton].pathId;
+    console.log(pathId + ' ' + allGameplayButtons[pressedButton].inPlayColor);
+    $(pathId).css({fill : allGameplayButtons[pressedButton].inPlayColor});
+}
+
+function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor) {
+    this.gameplayButtonId = gameplayButtonId;
+    this.pathId = pathId;
+    this.normalColor = normalColor;
+    this.inPlayColor = inPlayColor;
+}
+
+var greenButton = new GamePlayButton('#greenButton', 'path-1', '#00C513', '#05ff1d');
+var yellowButton = new GamePlayButton('#yellowButton', 'path-2', '#FFE500', '#ebff00');
+var blueButton = new GamePlayButton('#blueButton', 'path-3', '#005CFF', '#699fff');
+var redButton = new GamePlayButton('#redButton', 'path-4', '#FF0000', '#ff004c');
+var allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
