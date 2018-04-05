@@ -12,14 +12,12 @@ $(document).ready(function() {
     $('.gameplayButton').click(function() {
         lightGameplayButton($(this));
     });
-
 });
 
 function lightGameplayButton(button) {
-    var pressedButton = button.attr('id');
-    var pathId = allGameplayButtons[pressedButton].pathId;
-    console.log(pathId + ' ' + allGameplayButtons[pressedButton].inPlayColor);
-    $(pathId).css({fill : allGameplayButtons[pressedButton].inPlayColor});
+    var buttonId = button.attr('id');
+    var pathId = allGameplayButtons[buttonId].pathId;
+    $(pathId).css({fill : allGameplayButtons[buttonId].inPlayColor});
 }
 
 function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor) {
@@ -29,8 +27,8 @@ function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor) {
     this.inPlayColor = inPlayColor;
 }
 
-var greenButton = new GamePlayButton('#greenButton', 'path-1', '#00C513', '#05ff1d');
-var yellowButton = new GamePlayButton('#yellowButton', 'path-2', '#FFE500', '#ebff00');
-var blueButton = new GamePlayButton('#blueButton', 'path-3', '#005CFF', '#699fff');
-var redButton = new GamePlayButton('#redButton', 'path-4', '#FF0000', '#ff004c');
+var greenButton = new GamePlayButton('#greenButton', '#path-1', '#00C513', '#05ff1d');
+var yellowButton = new GamePlayButton('#yellowButton', '#path-2', '#FFE500', '#ff9900');
+var blueButton = new GamePlayButton('#blueButton', '#path-3', '#0900b1', '#005CFF');
+var redButton = new GamePlayButton('#redButton', '#path-4', '#FF0000', '#fb52cc');
 var allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
