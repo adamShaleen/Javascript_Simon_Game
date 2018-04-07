@@ -10,25 +10,50 @@
 $(document).ready(function() {
 
     $('.gameplayButton').click(function() {
-        lightGameplayButton($(this));
+        lightAndSoundGameplayButton($(this));
     });
 });
 
-function lightGameplayButton(button) {
+function lightAndSoundGameplayButton(button) {
+
     var buttonId = button.attr('id');
-    var pathId = allGameplayButtons[buttonId].pathId;
-    $(pathId).css({fill : allGameplayButtons[buttonId].inPlayColor});
+    var buttonAttributes = allGameplayButtons[buttonId];
+    var pathId = buttonAttributes.pathId;
+    var buttonAudio = buttonAttributes.audio;
+
+    buttonAudio.load();
+    buttonAudio.play();
+
+    $(pathId).css({fill : buttonAttributes.inPlayColor});
+    setTimeout(setNormalColor, 400);
+
+    function setNormalColor() {
+        $(pathId).css({fill : buttonAttributes.normalColor});
+    }
 }
 
-function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor) {
+// Gameplay Button Schema
+function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor, audio) {
     this.gameplayButtonId = gameplayButtonId;
     this.pathId = pathId;
     this.normalColor = normalColor;
     this.inPlayColor = inPlayColor;
+    this.audio = audio;
 }
 
-var greenButton = new GamePlayButton('#greenButton', '#path-1', '#00C513', '#05ff1d');
-var yellowButton = new GamePlayButton('#yellowButton', '#path-2', '#FFE500', '#ff9900');
-var blueButton = new GamePlayButton('#blueButton', '#path-3', '#0900b1', '#005CFF');
-var redButton = new GamePlayButton('#redButton', '#path-4', '#FF0000', '#fb52cc');
+// External Audio files
+var greenAudio = document.createElement("audio");
+greenAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
+var yellowAudio = document.createElement("audio");
+yellowAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3");
+var blueAudio = document.createElement("audio");
+blueAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3");
+var redAudio = document.createElement("audio");
+redAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3");
+
+// Gameplay Button Attributes
+var greenButton = new GamePlayButton('#greenButton', '#path-1', '#00C513', '#05ff1d', greenAudio);
+var yellowButton = new GamePlayButton('#yellowButton', '#path-2', '#FFE500', '#ff9900', yellowAudio);
+var blueButton = new GamePlayButton('#blueButton', '#path-3', '#0900b1', '#005CFF', blueAudio);
+var redButton = new GamePlayButton('#redButton', '#path-4', '#FF0000', '#fb52cc', redAudio);
 var allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
