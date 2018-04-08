@@ -7,19 +7,37 @@
 // User Story: I can play in strict mode where if I get a button press wrong, it notifies me that I have done so, and the game restarts at a new random series of button presses.
 // User Story: I can win the game by getting a series of 20 steps correct. I am notified of my victory, then the game starts over.
 
+
 $(document).ready(function() {
 
-    $('.gameplayButton').click(function() {
-        lightAndSoundGameplayButton($(this));
+    $('.gameplayButton').off();
+    $('#startButton').click(function() {
+        startGame();
     });
+
 });
+
+// Utilities
+//=============================================================================
+
+function startGame() {
+    createButtonOrder();
+}
+
+// Create a random order of 20 moves
+let buttonOrder = [];
+function createButtonOrder() {
+    for (let i = 0; i < 20; i++) {
+        buttonOrder.push(Math.floor(Math.random()*4));
+    }
+}
 
 function lightAndSoundGameplayButton(button) {
 
-    var buttonId = button.attr('id');
-    var buttonAttributes = allGameplayButtons[buttonId];
-    var pathId = buttonAttributes.pathId;
-    var buttonAudio = buttonAttributes.audio;
+    let buttonId = button.attr('id');
+    let buttonAttributes = allGameplayButtons[buttonId];
+    let pathId = buttonAttributes.pathId;
+    let buttonAudio = buttonAttributes.audio;
 
     buttonAudio.load();
     buttonAudio.play();
@@ -32,6 +50,18 @@ function lightAndSoundGameplayButton(button) {
     }
 }
 
+// External Audio files
+let greenAudio = document.createElement("audio");
+greenAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
+let yellowAudio = document.createElement("audio");
+yellowAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3");
+let blueAudio = document.createElement("audio");
+blueAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3");
+let redAudio = document.createElement("audio");
+redAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3");
+let wrongAudio = document.createElement("audio");
+wrongAudio.setAttribute("src", "http://www.orangefreesounds.com/wp-content/uploads/2014/08/Wrong-answer-sound-effect.mp3?_=1");
+
 // Gameplay Button Schema
 function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor, audio) {
     this.gameplayButtonId = gameplayButtonId;
@@ -41,19 +71,9 @@ function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor, audi
     this.audio = audio;
 }
 
-// External Audio files
-var greenAudio = document.createElement("audio");
-greenAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
-var yellowAudio = document.createElement("audio");
-yellowAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3");
-var blueAudio = document.createElement("audio");
-blueAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3");
-var redAudio = document.createElement("audio");
-redAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3");
-
 // Gameplay Button Attributes
-var greenButton = new GamePlayButton('#greenButton', '#path-1', '#00C513', '#05ff1d', greenAudio);
-var yellowButton = new GamePlayButton('#yellowButton', '#path-2', '#FFE500', '#ff9900', yellowAudio);
-var blueButton = new GamePlayButton('#blueButton', '#path-3', '#0900b1', '#005CFF', blueAudio);
-var redButton = new GamePlayButton('#redButton', '#path-4', '#FF0000', '#fb52cc', redAudio);
-var allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
+let greenButton = new GamePlayButton('#greenButton', '#path-1', '#00C513', '#05ff1d', greenAudio);
+let yellowButton = new GamePlayButton('#yellowButton', '#path-2', '#FFE500', '#ff9900', yellowAudio);
+let blueButton = new GamePlayButton('#blueButton', '#path-3', '#0900b1', '#005CFF', blueAudio);
+let redButton = new GamePlayButton('#redButton', '#path-4', '#FF0000', '#fb52cc', redAudio);
+let allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
