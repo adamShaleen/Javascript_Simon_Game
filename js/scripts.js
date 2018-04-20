@@ -20,36 +20,6 @@ $(document).ready(function() {
 // Utilities
 //=============================================================================
 
-function startGame() {
-    createButtonOrder();
-}
-
-// Create a random order of 20 moves
-let buttonOrder = [];
-function createButtonOrder() {
-    for (let i = 0; i < 20; i++) {
-        buttonOrder.push(Math.floor(Math.random()*4));
-    }
-}
-
-function lightAndSoundGameplayButton(button) {
-
-    let buttonId = button.attr('id');
-    let buttonAttributes = allGameplayButtons[buttonId];
-    let pathId = buttonAttributes.pathId;
-    let buttonAudio = buttonAttributes.audio;
-
-    buttonAudio.load();
-    buttonAudio.play();
-
-    $(pathId).css({fill : buttonAttributes.inPlayColor});
-    setTimeout(setNormalColor, 400);
-
-    function setNormalColor() {
-        $(pathId).css({fill : buttonAttributes.normalColor});
-    }
-}
-
 // External Audio files
 let greenAudio = document.createElement("audio");
 greenAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3");
@@ -63,8 +33,8 @@ let wrongAudio = document.createElement("audio");
 wrongAudio.setAttribute("src", "http://www.orangefreesounds.com/wp-content/uploads/2014/08/Wrong-answer-sound-effect.mp3?_=1");
 
 // Gameplay Button Schema
-function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor, audio) {
-    this.gameplayButtonId = gameplayButtonId;
+function GamePlayButton(name, pathId, normalColor, inPlayColor, audio) {
+    this.name = name;
     this.pathId = pathId;
     this.normalColor = normalColor;
     this.inPlayColor = inPlayColor;
@@ -72,8 +42,46 @@ function GamePlayButton(gameplayButtonId, pathId, normalColor, inPlayColor, audi
 }
 
 // Gameplay Button Attributes
-let greenButton = new GamePlayButton('#greenButton', '#path-1', '#00C513', '#05ff1d', greenAudio);
-let yellowButton = new GamePlayButton('#yellowButton', '#path-2', '#FFE500', '#ff9900', yellowAudio);
-let blueButton = new GamePlayButton('#blueButton', '#path-3', '#0900b1', '#005CFF', blueAudio);
-let redButton = new GamePlayButton('#redButton', '#path-4', '#FF0000', '#fb52cc', redAudio);
+let greenButton = new GamePlayButton('greenButton', '#path-1', '#00C513', '#05ff1d', greenAudio);
+let yellowButton = new GamePlayButton('yellowButton', '#path-2', '#FFE500', '#ff9900', yellowAudio);
+let blueButton = new GamePlayButton('blueButton', '#path-3', '#0900b1', '#005CFF', blueAudio);
+let redButton = new GamePlayButton('redButton', '#path-4', '#FF0000', '#fb52cc', redAudio);
 let allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
+let buttonOrder = [];
+let countDisplay = 0;
+const buttonsArr = [greenButton, yellowButton, blueButton, redButton];
+
+function startGame() {
+    createButtonOrder();
+    initiateGameplay();
+};
+
+// Create a random order of 20 moves
+createButtonOrder = () => {
+    for (let i = 0; i < 20; i++) {
+        buttonOrder.push(buttonsArr[Math.floor(Math.random()*4)]);
+    }
+};
+
+initiateGameplay = () => {
+    countDisplay++;
+    $('#countDisplay').text(countDisplay);
+    lightAndSoundGameplayButton(buttonOrder[0]);
+}
+
+function lightAndSoundGameplayButton(button) {
+
+    let buttonAttributes = allGameplayButtons[button.name];
+    let pathId = buttonAttributes.pathId;
+    let buttonAudio = buttonAttributes.audio;
+
+    buttonAudio.load();
+    buttonAudio.play();
+
+    $(pathId).css({fill : buttonAttributes.inPlayColor});
+    setTimeout(setNormalColor, 400);
+
+    function setNormalColor() {
+        $(pathId).css({fill : buttonAttributes.normalColor});
+    }
+};
