@@ -53,20 +53,35 @@ const buttonsArr = [greenButton, yellowButton, blueButton, redButton];
 
 function startGame() {
     createButtonOrder();
+    computerMove();
     initiateGameplay();
 };
 
 // Create a random order of 20 moves
-createButtonOrder = () => {
+function createButtonOrder() {
     for (let i = 0; i < 20; i++) {
         buttonOrder.push(buttonsArr[Math.floor(Math.random()*4)]);
     }
 };
 
-initiateGameplay = () => {
+function computerMove() {
+    let moves = 0;
+    increaseDisplayCount();
+    // computer makes first move
+    lightAndSoundGameplayButton(buttonOrder[moves]);
+    // check to see if player makes correct button move
+    $('.gameplayButton').click(function() {
+        if (this === buttonOrder[moves]) {
+            lightAndSoundGameplayButton(buttonOrder[moves]);
+        } else {
+            // play the bad sound, reset etc
+        }
+    });
+}
+
+function increaseDisplayCount() {
     countDisplay++;
     $('#countDisplay').text(countDisplay);
-    lightAndSoundGameplayButton(buttonOrder[0]);
 }
 
 function lightAndSoundGameplayButton(button) {
