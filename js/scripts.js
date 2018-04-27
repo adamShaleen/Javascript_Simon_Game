@@ -7,7 +7,6 @@
 // User Story: I can play in strict mode where if I get a button press wrong, it notifies me that I have done so, and the game restarts at a new random series of button presses.
 // User Story: I can win the game by getting a series of 20 steps correct. I am notified of my victory, then the game starts over.
 
-
 $(document).ready(function() {
 
     $('.gameplayButton').off();
@@ -48,13 +47,12 @@ let blueButton = new GamePlayButton('blueButton', '#path-3', '#0900b1', '#005CFF
 let redButton = new GamePlayButton('redButton', '#path-4', '#FF0000', '#fb52cc', redAudio);
 let allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
 let buttonOrder = [];
-let countDisplay = 0;
+let count = 0;
 const buttonsArr = [greenButton, yellowButton, blueButton, redButton];
 
 function startGame() {
     createButtonOrder();
-    computerMove();
-    initiateGameplay();
+    makeMoves();
 };
 
 // Create a random order of 20 moves
@@ -64,24 +62,26 @@ function createButtonOrder() {
     }
 };
 
-function computerMove() {
-    let moves = 0;
-    increaseDisplayCount();
-    // computer makes first move
-    lightAndSoundGameplayButton(buttonOrder[moves]);
-    // check to see if player makes correct button move
-    $('.gameplayButton').click(function() {
-        if (this === buttonOrder[moves]) {
-            lightAndSoundGameplayButton(buttonOrder[moves]);
-        } else {
-            // play the bad sound, reset etc
-        }
-    });
+function makeMoves() {
+
+    increaseCountDisplay();
+    let buttonOrderInterval = 0;
+
+    // computer makes series of moves between 1-20 depending on which count the game is on
+    for (let i = 0; i < count; i++) {
+        lightAndSoundGameplayButton(buttonOrder[buttonOrderInterval]);
+        // need to pause/wait a moment before playing the next button otherwise it happens too quickly
+    }
 }
 
-function increaseDisplayCount() {
-    countDisplay++;
-    $('#countDisplay').text(countDisplay);
+function increaseCountDisplay() {
+    count++;
+    $('#countDisplay').text(count);
+}
+
+function resetCountDisplay() {
+    count = 0;
+    $('#countDisplay').text(count);
 }
 
 function lightAndSoundGameplayButton(button) {
