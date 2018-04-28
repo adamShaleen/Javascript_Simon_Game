@@ -14,6 +14,10 @@ $(document).ready(function() {
         startGame();
     });
 
+    $('.gameplayButton').click(function() {
+        addToAttemptedSequence(this);
+    });
+
 });
 
 // Utilities
@@ -46,14 +50,43 @@ let yellowButton = new GamePlayButton('yellowButton', '#path-2', '#FFE500', '#ff
 let blueButton = new GamePlayButton('blueButton', '#path-3', '#0900b1', '#005CFF', blueAudio);
 let redButton = new GamePlayButton('redButton', '#path-4', '#FF0000', '#fb52cc', redAudio);
 let allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
-let buttonOrder = [];
-let count = 0;
+
+// Globals
 const buttonsArr = [greenButton, yellowButton, blueButton, redButton];
+let buttonOrder = [];
+let currentSequence = [];
+let attemptedSequence = [];
+let count = 0;
 
 function startGame() {
     createButtonOrder();
-    makeMoves();
-};
+    computerPlaysCurrentSequence();
+}
+
+function computerPlaysCurrentSequence() {
+    getCurrentSequence();
+    increaseCountDisplay();
+
+    // computer makes series of moves between 1-20 depending on which count the game is on
+    for (let i = 0; i < currentSequence.length; i++) {
+        lightAndSoundGameplayButton(currentSequence[i]);
+        // TODO some kind of pause in between each button play
+    }
+}
+
+function addToAttemptedSequence(button) {
+    attemptedSequence.push(button);
+    checkForCorrectSequence(button);
+}
+
+function checkForCorrectSequence(button) {
+    // check if button played was correct in currentSequence
+    if (attemptedSequence[!interval!] === currentSequence[!interval!]) {
+        lightAndSoundGameplayButton(button);
+    } else {
+        // play bad sounds, etc
+    }
+}
 
 // Create a random order of 20 moves
 function createButtonOrder() {
@@ -62,15 +95,10 @@ function createButtonOrder() {
     }
 };
 
-function makeMoves() {
-
-    increaseCountDisplay();
-    let buttonOrderInterval = 0;
-
-    // computer makes series of moves between 1-20 depending on which count the game is on
-    for (let i = 0; i < count; i++) {
-        lightAndSoundGameplayButton(buttonOrder[buttonOrderInterval]);
-        // need to pause/wait a moment before playing the next button otherwise it happens too quickly
+// Get currentSequence for computer to use and for player to match
+function getCurrentSequence() {
+    for (let i = 0; i <= count; i++) {
+        currentSequence.push(buttonOrder[i]);
     }
 }
 
