@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
 
     $('.gameplayButton').click(function() {
-        addToAttemptedSequence(this);
+        playerClicksButton(this);
     });
 
 });
@@ -55,8 +55,9 @@ let allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, 
 const buttonsArr = [greenButton, yellowButton, blueButton, redButton];
 let buttonOrder = [];
 let currentSequence = [];
-let attemptedSequence = [];
-let count = 0;
+let playerSequence = [];
+let roundCount = 0;
+let sequenceInterval = 0;
 
 function startGame() {
     createButtonOrder();
@@ -67,25 +68,49 @@ function computerPlaysCurrentSequence() {
     getCurrentSequence();
     increaseCountDisplay();
 
-    // computer makes series of moves between 1-20 depending on which count the game is on
+    // computer makes series of moves between 1-20 depending on which roundCount the game is on
     for (let i = 0; i < currentSequence.length; i++) {
         lightAndSoundGameplayButton(currentSequence[i]);
         // TODO some kind of pause in between each button play
     }
 }
 
-function addToAttemptedSequence(button) {
-    attemptedSequence.push(button);
-    checkForCorrectSequence(button);
+function playerClicksButton(button) {
+    playerSequence.push($(button).attr('id'));
+
+    if (!isButtonCorrect()) {
+
+        // TODO Pause
+        computerPlaysCurrentSequence();
+    }
+
+    // TODO Pause in between checking for the correct button and end of sequence
+
+    if (isEndOfSequence()) {
+        increaseCountDisplay();
+    }
 }
 
-function checkForCorrectSequence(button) {
+function isButtonCorrect() {
     // check if button played was correct in currentSequence
-    if (attemptedSequence[!interval!] === currentSequence[!interval!]) {
-        lightAndSoundGameplayButton(button);
+    if (playerSequence[sequenceInterval] === currentSequence[sequenceInterval].name) {
+        lightAndSoundGameplayButton(currentSequence[sequenceInterval]);
+        sequenceInterval++;
+        return true;
     } else {
         // play bad sounds, etc
+        wrongAudio.load();
+        wrongAudio.play();
+        return false;
     }
+}
+
+function isEndOfSequence() {
+    if (playerSequence.length === currentSequence.length) {
+        return true;
+    }
+
+    return false;
 }
 
 // Create a random order of 20 moves
@@ -97,19 +122,19 @@ function createButtonOrder() {
 
 // Get currentSequence for computer to use and for player to match
 function getCurrentSequence() {
-    for (let i = 0; i <= count; i++) {
+    for (let i = 0; i <= roundCount; i++) {
         currentSequence.push(buttonOrder[i]);
     }
 }
 
 function increaseCountDisplay() {
-    count++;
-    $('#countDisplay').text(count);
+    roundCount++;
+    $('#countDisplay').text(roundCount);
 }
 
 function resetCountDisplay() {
-    count = 0;
-    $('#countDisplay').text(count);
+    roundCount = 0;
+    $('#countDisplay').text(roundCount);
 }
 
 function lightAndSoundGameplayButton(button) {
