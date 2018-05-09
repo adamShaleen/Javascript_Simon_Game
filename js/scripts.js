@@ -11,13 +11,42 @@ $(document).ready(function() {
 
     $('.gameplayButton').off();
     $('#startButton').click(function() {
-        startGame();
+        gameOn = !gameOn;
+        $(this).toggleClass('buttonOn');
+        if (gameOn) {
+            startGame();
+        } else {
+            resetGame();
+        }
     });
 
-    $('.gameplayButton').click(function() {
-        playerClicksButton(this);
+    $('#strictButton').click(function() {
+        strictMode = !strictMode;
+        $(this).toggleClass('buttonOn');
     });
 
+    // $('.gameplayButton').click(function() {
+    //     let clickedButton = gameplayButtons[$(this).attr('id')];
+    //     lightAndSoundGameplayButton(clickedButton);
+    // });
+
+    // clicking the start button (without strict)
+    // creates a sequence of a 20 button order
+    // current index is established (how many moves to play)
+    // increments display count
+    // computer plays sequence of current index
+    // player attempts sequence
+        // if correct -> current index increases + increments display count.  Computer plays increased sequence. Repeat
+        // if incorrect -> buzzer sounds + computer plays same sequence. Repeat
+
+    // clicking the start button (with strict)
+    // creates a sequence of a 20 button order
+    // increments display count
+    // current index is established (how many moves to play)
+    // computer plays sequence of current index
+    // player attempts sequence
+        // if correct -> current index increases + increments display count.  Computer plays increased sequence. Repeat
+        // if incorrect -> buzzer sounds + display count returns to 1 + new sequence of 20 button order is created. current index is reset to first position. Computer plays sequence of current index
 });
 
 // Utilities
@@ -35,121 +64,101 @@ redAudio.setAttribute("src", "https://s3.amazonaws.com/freecodecamp/simonSound2.
 let wrongAudio = document.createElement("audio");
 wrongAudio.setAttribute("src", "http://www.orangefreesounds.com/wp-content/uploads/2014/08/Wrong-answer-sound-effect.mp3?_=1");
 
-// Gameplay Button Schema
-function GamePlayButton(name, pathId, normalColor, inPlayColor, audio) {
+function GamePlayButton(name, pathId, color, clickedColor, audio) {
     this.name = name;
     this.pathId = pathId;
-    this.normalColor = normalColor;
-    this.inPlayColor = inPlayColor;
+    this.color = color;
+    this.clickedColor = clickedColor;
     this.audio = audio;
 }
 
-// Gameplay Button Attributes
 let greenButton = new GamePlayButton('greenButton', '#path-1', '#00C513', '#05ff1d', greenAudio);
 let yellowButton = new GamePlayButton('yellowButton', '#path-2', '#FFE500', '#ff9900', yellowAudio);
 let blueButton = new GamePlayButton('blueButton', '#path-3', '#0900b1', '#005CFF', blueAudio);
 let redButton = new GamePlayButton('redButton', '#path-4', '#FF0000', '#fb52cc', redAudio);
-let allGameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
+let gameplayButtons = {greenButton: greenButton, yellowButton: yellowButton, blueButton: blueButton, redButton: redButton};
+const gameplayButtonsArrary = [greenButton, yellowButton, blueButton, redButton];
 
-// Globals
-const buttonsArr = [greenButton, yellowButton, blueButton, redButton];
-let buttonOrder = [];
-let currentSequence = [];
-let playerSequence = [];
-let roundCount = 0;
-let sequenceInterval = 0;
+let buttonSequence = [];
+let index;
+let countDisplay = 0;
+let gameOn = false;
+let strictMode = false;
 
 function startGame() {
-    createButtonOrder();
-    computerPlaysCurrentSequence();
+    setButtonSequence();
+    index = 0;
+    computerPlaysSequence();
 }
 
-function computerPlaysCurrentSequence() {
-    getCurrentSequence();
-    increaseCountDisplay();
-
-    // computer makes series of moves between 1-20 depending on which roundCount the game is on
-    for (let i = 0; i < currentSequence.length; i++) {
-        lightAndSoundGameplayButton(currentSequence[i]);
-        // TODO some kind of pause in between each button play
+function computerPlaysSequence() {
+    incrementCountDisplay();
+    for (let i = 0; i <= 0; i++) {
+        lightAndSoundGameplayButton(buttonSequence[i]);
+        // TODO pause before playing next button
     }
+    playerAttemptsSequence();
 }
 
-function playerClicksButton(button) {
-    playerSequence.push($(button).attr('id'));
+function playerAttemptsSequence() {
 
-    if (!isButtonCorrect()) {
+    $('.gameplayButton').click(function() {
 
-        // TODO Pause
-        computerPlaysCurrentSequence();
-    }
+        // player chooses wrong button
+        if (!$(this).attr('name') === buttonSequence[index].name) {
+            console.log('wrong button')
+            wrongAudio.load();
+            wrongAudio.play();
+        } else {
+            let clickedButton = gameplayButtons[$(this).attr('id')];
+            lightAndSoundGameplayButton(clickedButton);
+        }
 
-    // TODO Pause in between checking for the correct button and end of sequence
+        // player finishes sequence correctly
+        if (index === 20) {
+            // you win, reset everything and do something that indicates player won
+        }
 
-    if (isEndOfSequence()) {
-        increaseCountDisplay();
-    }
+        incrementIndex();
+        computerPlaysSequence();
+    });
 }
 
-function isButtonCorrect() {
-    // check if button played was correct in currentSequence
-    if (playerSequence[sequenceInterval] === currentSequence[sequenceInterval].name) {
-        lightAndSoundGameplayButton(currentSequence[sequenceInterval]);
-        sequenceInterval++;
-        return true;
-    } else {
-        // play bad sounds, etc
-        wrongAudio.load();
-        wrongAudio.play();
-        return false;
-    }
+function incrementIndex() {
+    index++;
 }
 
-function isEndOfSequence() {
-    if (playerSequence.length === currentSequence.length) {
-        return true;
-    }
-
-    return false;
+function incrementCountDisplay() {
+    countDisplay++;
+    $('#countDisplay').text(countDisplay);
 }
 
-// Create a random order of 20 moves
-function createButtonOrder() {
+function setButtonSequence() {
     for (let i = 0; i < 20; i++) {
-        buttonOrder.push(buttonsArr[Math.floor(Math.random()*4)]);
+        buttonSequence.push(gameplayButtonsArrary[Math.floor(Math.random()*4)]);
+    }
+}
+
+function lightAndSoundGameplayButton(clickedButton) {
+
+    let button = gameplayButtons[clickedButton.name];
+
+    button.audio.load();
+    button.audio.play();
+
+    $(button.pathId).css({fill : button.clickedColor});
+    setTimeout(setColor, 400);
+
+    function setColor() {
+        $(button.pathId).css({fill : button.color});
     }
 };
 
-// Get currentSequence for computer to use and for player to match
-function getCurrentSequence() {
-    for (let i = 0; i <= roundCount; i++) {
-        currentSequence.push(buttonOrder[i]);
-    }
+function resetGame() {
+    buttonSequence = [];
+    countDisplay = 0;
+    gameOn = false;
+    strictMode = false;
+    $('#countDisplay').text(countDisplay);
+    $('#strictButton').removeClass('buttonOn');
 }
-
-function increaseCountDisplay() {
-    roundCount++;
-    $('#countDisplay').text(roundCount);
-}
-
-function resetCountDisplay() {
-    roundCount = 0;
-    $('#countDisplay').text(roundCount);
-}
-
-function lightAndSoundGameplayButton(button) {
-
-    let buttonAttributes = allGameplayButtons[button.name];
-    let pathId = buttonAttributes.pathId;
-    let buttonAudio = buttonAttributes.audio;
-
-    buttonAudio.load();
-    buttonAudio.play();
-
-    $(pathId).css({fill : buttonAttributes.inPlayColor});
-    setTimeout(setNormalColor, 400);
-
-    function setNormalColor() {
-        $(pathId).css({fill : buttonAttributes.normalColor});
-    }
-};

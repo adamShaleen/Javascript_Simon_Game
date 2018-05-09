@@ -14,6 +14,10 @@ body {
     cursor: pointer;
 }
 
+.buttonOn {
+    fill: #00C513
+}
+
 /* greenbutton #00C513 #05ff1d  */
 /*  yellowButton #FFE500 #ff9900 */
 /*  blueButton #005CFF #0900b1 */
